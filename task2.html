@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Task 2</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f2f2f2; margin: 20px; }
+    .container { max-width: 800px; margin: auto; background: #fff; padding: 20px; border-radius: 8px; }
+    input, textarea, button { display: block; width: 100%; margin: 10px 0; padding: 10px; }
+    button { background: teal; color: #fff; border: none; cursor: pointer; }
+    button:hover { background: darkcyan; }
+    .error { color: red; font-size: 14px; display: none; }
+    ul { list-style: none; padding: 0; }
+    li { background: #eee; margin: 5px 0; padding: 10px; border-radius: 5px; display: flex; justify-content: space-between; }
+    li.done { text-decoration: line-through; color: gray; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Contact Form</h2>
+    <form id="form">
+      <input type="text" id="name" placeholder="Name">
+      <div class="error" id="nameErr">Enter name</div>
+      <input type="email" id="email" placeholder="Email">
+      <div class="error" id="emailErr">Enter valid email</div>
+      <textarea id="message" placeholder="Message"></textarea>
+      <button type="submit">Submit</button>
+    </form>
+
+    <h2>To-Do List</h2>
+    <input type="text" id="taskInput" placeholder="New Task">
+    <button id="addTask">Add Task</button>
+    <ul id="taskList"></ul>
+  </div>
+
+  <script>
+    const form = document.getElementById('form');
+    const nameField = document.getElementById('name');
+    const emailField = document.getElementById('email');
+    const nameErr = document.getElementById('nameErr');
+    const emailErr = document.getElementById('emailErr');
+
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      let ok = true;
+      if (!nameField.value.trim()) { nameErr.style.display = 'block'; ok = false; } else { nameErr.style.display = 'none'; }
+      const emailVal = emailField.value.trim();
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailVal)) { emailErr.style.display = 'block'; ok = false; } else { emailErr.style.display = 'none'; }
+      if (ok) { alert('Form submitted'); form.reset(); }
+    });
+
+    const taskInput = document.getElementById('taskInput');
+    const addTask = document.getElementById('addTask');
+    const taskList = document.getElementById('taskList');
+
+    addTask.addEventListener('click', () => {
+      if (!taskInput.value.trim()) return;
+      const li = document.createElement('li');
+      const span = document.createElement('span');
+      span.textContent = taskInput.value;
+      li.appendChild(span);
+
+      const removeBtn = document.createElement('button');
+      removeBtn.textContent = 'Remove';
+      removeBtn.onclick = () => li.remove();
+
+      span.onclick = () => li.classList.toggle('done');
+      li.appendChild(removeBtn);
+      taskList.appendChild(li);
+      taskInput.value = '';
+    });
+  </script>
+</body>
+</html>
